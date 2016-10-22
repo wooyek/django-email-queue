@@ -1,0 +1,10 @@
+invoke
+pathlib
+bumpversion
+coverage
+coveralls
+tox
+mock
+factory-boy
+coverage
+pylint
