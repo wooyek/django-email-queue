@@ -16,7 +16,8 @@ install:
 script: coverage run runtests.py
 
 after_success:
-  coveralls
+  - coveralls
+  - bash <(curl -s https://codecov.io/bash)
 
 branches:
   only:
