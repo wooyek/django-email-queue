@@ -6,5 +6,4 @@ coveralls
 tox
 mock
 factory-boy
-coverage
 pylint
