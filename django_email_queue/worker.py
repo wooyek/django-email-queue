@@ -47,8 +47,10 @@ def run():
     from django_email_queue.models import QueuedEmailMessage
 
     while True:
-        QueuedEmailMessage.send_queued()
-        sleep(settings.EMAIL_QUEUE_SLEEP_TIME)
+        QueuedEmailMessage.send_queued(10)
+        seconds = settings.EMAIL_QUEUE_SLEEP_TIME
+        logging.debug("Will sleep for %s seconds", seconds)
+        sleep(seconds)
 
 
 if __name__ == '__main__':  # pragma: no cover
