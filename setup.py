@@ -50,7 +50,7 @@ setup_kwargs = {
     'test_suite': 'runtests.runtests',
     'entry_points': {
         'console_scripts': [
-            'email_queue_worker = django_email_queue_worker_run',
+            'email_queue_worker = django_email_queue.worker:run',
         ],
     },
 }
