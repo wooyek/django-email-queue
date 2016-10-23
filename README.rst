@@ -48,7 +48,7 @@ but before them they'll get stored and queued in models visible from admin panel
 
     INSTALLED_APPS = [
         ...
-        "django_email_queue",
+        'django_email_queue',
     ]
 
 You'll be able to send them and clear the queue through from a management command for example using cron jobs.
