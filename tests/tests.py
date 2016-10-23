@@ -20,11 +20,13 @@
 # THE SOFTWARE.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import logging
 import os
 from datetime import date, datetime, timedelta
 
+import six
 from django.conf import settings
 from django.contrib import admin
 from django.core.mail import EmailMultiAlternatives
@@ -48,19 +50,29 @@ class BackendsTests(TestCase):
         send_mail("foo", "bar", "me@examle.com", ["to@example.com"])
         self.assertTrue(send_messages.called)
 
+    @patch("django_email_queue.models.QueuedEmailMessage._create")
+    def test_send_mail2(self, create):
+        send_mail("foo", "bar", "me@examle.com", ["to@example.com"])
+        self.assertTrue(create.called)
+
     @patch("django_email_queue.models.QueuedEmailMessage.queue")
     def test_send_messages(self, queue):
         message = EmailMultiAlternatives()
-        backends.EmailBackend().send_messages(message)
-        queue.assert_called_with(message)
+        backends.EmailBackend().send_messages([message])
+        queue.assert_called_with([message])
 
     @patch("django_email_queue.models.QueuedEmailMessage.send")
     def test_send_messages(self, send):
         with self.settings(EMAIL_QUEUE_EAGER=True):
             message = EmailMultiAlternatives(to=["to@example.com"])
-            backends.EmailBackend().send_messages(message)
+            backends.EmailBackend().send_messages([message])
             self.assertTrue(send.called)
 
+    @patch("django.core.mail.backends.console.EmailBackend.send_messages")
+    def test_eager(self, send_messages):
+        with self.settings(EMAIL_QUEUE_EAGER=True):
+            send_mail("foo", "bar", "me@examle.com", ["to@example.com"])
+            self.assertTrue(send_messages.called)
 
 class QueuedEmailMessageTests(TestCase):
     @patch("django.core.mail.backends.console.EmailBackend.send_messages")
@@ -99,7 +111,7 @@ class QueuedEmailMessageTests(TestCase):
             cc=["cc@example.com", "cc2@example.com"], reply_to=["no-reply@example.com", "no-reply2@example.com"]
         )
         email_message.attach_alternative("baz", "text/html")
-        instance = QueuedEmailMessage.queue(email_message)
+        instance = list(QueuedEmailMessage.queue([email_message]))[0]
         self.assertIsNotNone(instance.pk)
         self.assertIsNotNone(instance.created)
         self.assertEqual(QueuedEmailMessageStatus.created, instance.status)
@@ -115,16 +127,18 @@ class QueuedEmailMessageTests(TestCase):
     def test_not_supported_alternatives(self):
         email_message = EmailMultiAlternatives("foo", "bar", "from@example.com", ["to@example.com"])
         email_message.attach_alternative("some", "text/json")
-        self.assertRaises(NotImplementedError, QueuedEmailMessage.queue, email_message)
+        generator = QueuedEmailMessage.queue([email_message])
+        self.assertRaises(NotImplementedError, list, generator)
 
     def test_no_recipients(self):
         email_message = EmailMultiAlternatives("foo", "bar", "from@example.com")
         email_message.attach_alternative("some", "text/json")
-        self.assertRaises(AssertionError, QueuedEmailMessage.queue, email_message)
+        generator = QueuedEmailMessage.queue([email_message])
+        self.assertRaises(AssertionError, list, generator)
 
     def test_str(self):
-        o = QueuedEmailMessage(subject="a", to="b")
-        self.assertEqual("QueuedEmailMessage:a:b", str(o))
+        o = QueuedEmailMessage(subject="ążśźćńółĄŻŚŹĘĆŃÓŁ", to="b")
+        self.assertEqual(u"QueuedEmailMessage:ążśźćńółĄŻŚŹĘĆŃÓŁ:b", six.text_type(o))
 
 
 class QueuedEmailMessageStatusTests(TestCase):
@@ -148,6 +162,10 @@ class TestAdmin(TestCase):
         qry = QueuedEmailMessage.objects.all()
         QueuedEmailMessageAdmin(QueuedEmailMessage, None).bulk_send(None, qry)
         self.assertTrue(bulk_send.called)
+
+    def test_checks(self):
+        from django.core.management import BaseCommand
+        BaseCommand().check(display_num_errors=True)
 
 class TestWorker(TestCase):
     def test_worker(self):

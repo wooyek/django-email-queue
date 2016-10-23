@@ -19,6 +19,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import logging
 from enum import IntEnum
 
@@ -70,7 +73,7 @@ class QueuedEmailMessage(models.Model):
     # TODO: attachments, headers, alternatives
 
     def __str__(self):
-        return "{}:{}:{}".format(self.__class__.__name__, self.subject, self.to)
+        return u"{}:{}:{}".format(self.__class__.__name__, self.subject, self.to)
 
     @classmethod
     def _create(cls, email_message, commit=True):
@@ -100,10 +103,11 @@ class QueuedEmailMessage(models.Model):
         return instance
 
     @classmethod
-    def queue(cls, email_message):
-        instance = cls._create(email_message)
-        logging.debug("Queue message: %s", instance)
-        return instance
+    def queue(cls, email_messages):
+        for item in email_messages:
+            instance = cls._create(item)
+            logging.debug("Queue message: %s", instance)
+            yield instance
 
     def send(self, connection=None, fail_silently=False):
         if connection is None:

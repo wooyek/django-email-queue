@@ -47,8 +47,12 @@ setup_kwargs = {
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    'test_suite': 'runtests.runtests'
+    'test_suite': 'runtests.runtests',
+    'entry_points': {
+        'console_scripts': [
+            'email_queue_worker = django_email_queue_worker_run',
+        ],
+    },
 }
 
 setup(**setup_kwargs)
-

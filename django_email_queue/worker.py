@@ -43,9 +43,14 @@ django.setup()
 logging.debug("settings.__dir__: %s", settings.__dir__())
 logging.debug("settings.DEBUG: %s", settings.DEBUG)
 
-if __name__ == '__main__':  # pragma: no cover
+
+def run():
     from django_email_queue.models import QueuedEmailMessage
 
     while True:
         QueuedEmailMessage.send_queued()
         sleep(settings.EMAIL_QUEUE_SLEEP_TIME)
+
+
+if __name__ == '__main__':  # pragma: no cover
+    run()
