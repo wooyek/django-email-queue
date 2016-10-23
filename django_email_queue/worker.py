@@ -21,7 +21,7 @@ logging.info("os.environ['DJANGO_SETTINGS_MODULE']: %s" % os.environ['DJANGO_SET
 
 cwd = os.getcwd()
 
-if cwd not in sys.path:
+if cwd not in sys.path:  # pragma: no cover
     sys.path.append(cwd)
 
 # Show a debugging info on console
@@ -43,7 +43,7 @@ logging.debug("settings.__dir__: %s", settings.__dir__())
 logging.debug("settings.DEBUG: %s", settings.DEBUG)
 
 
-def run():
+def run():  # pragma: no cover
     from django_email_queue.models import QueuedEmailMessage
 
     while True:
