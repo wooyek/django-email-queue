@@ -57,6 +57,11 @@ def register_pypi(ctx):
     run("git checkout master")
     run("python setup.py register -r pypi")
 
+@task
+def register_pypi_test(ctx):
+    run("git checkout master")
+    run("python setup.py register -r pypitest")
+
 
 @task
 def upload_pypi(ctx):

@@ -23,7 +23,7 @@ with io.open("README.rst", encoding="UTF-8") as readme:
 version = "0.9.3"
 
 setup_kwargs = {
-    'name': "django-email-queue-backend",
+    'name': "django-email-queue",
     'version': version,
     'packages': find_packages(),
     'install_requires': [str(r.req) for r in install_requires],
