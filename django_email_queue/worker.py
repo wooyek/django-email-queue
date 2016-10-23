@@ -16,20 +16,19 @@ logging.disable(logging.NOTSET)
 
 # logging.info("Current user: %s" % getpass.getuser())
 
-# determine where is the single absolute path that
-# will be used as a reference point for other directories
-SITE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-
-from django.conf import settings
-
 assert 'DJANGO_SETTINGS_MODULE' in os.environ, "DJANGO_SETTINGS_MODULE is missing from environment, you must set if before running this worker"
 logging.info("os.environ['DJANGO_SETTINGS_MODULE']: %s" % os.environ['DJANGO_SETTINGS_MODULE'])
+
+cwd = os.getcwd()
+
+if cwd not in sys.path:
+    sys.path.append(cwd)
 
 # Show a debugging info on console
 logging.debug("__file__ = %s", __file__)
 logging.debug("sys.version = %s", sys.version)
 logging.debug("os.getpid() = %s", os.getpid())
-logging.debug("os.getcwd() = %s", os.getcwd())
+logging.debug("os.getcwd() = %s", cwd)
 logging.debug("os.curdir = %s", os.curdir)
 logging.debug("sys.path:\n\t%s", "\n\t".join(sys.path))
 logging.debug("PYTHONPATH:\n\t%s", "\n\t".join(os.environ.get('PYTHONPATH', "").split(';')))
