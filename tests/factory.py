@@ -1,5 +1,8 @@
 # coding=utf-8
 # Copyright (c) 2016 Janusz Skonieczny
+
+from __future__ import absolute_import
+
 import factory
 
 from django_email_queue.models import QueuedEmailMessage

@@ -40,8 +40,7 @@ class QueuedEmailMessageAdmin(admin.ModelAdmin):
     actions = ['bulk_send']
 
     # noinspection PyUnusedLocal
-    @staticmethod
-    def bulk_send(request, queryset):
+    def bulk_send(self, request, queryset):
         models.QueuedEmailMessage.bulk_send(queryset)
     bulk_send.short_description = _("bulk send")
 

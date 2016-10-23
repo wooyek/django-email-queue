@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from __future__ import absolute_import
+
 import logging
 import os
 from datetime import date, datetime, timedelta
@@ -137,7 +139,7 @@ class TestAdmin(TestCase):
     @patch("django_email_queue.models.QueuedEmailMessage.bulk_send")
     def test_send(self, bulk_send):
         qry = QueuedEmailMessage.objects.all()
-        QueuedEmailMessageAdmin.bulk_send(None, qry)
+        QueuedEmailMessageAdmin(QueuedEmailMessage, None).bulk_send(None, qry)
         self.assertTrue(bulk_send.called)
 
 class TestWorker(TestCase):
