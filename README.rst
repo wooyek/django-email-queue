@@ -42,6 +42,7 @@ This is a plugin replacement for your current EMAIL_BACKEND. You'll still use it
 but before them they'll get stored and queued in models visible from admin panel.
 
 .. code:: python
+
     EMAIL_BACKEND = 'django_email_queue.backends.EmailBackend'
     EMAIL_QUEUE_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
