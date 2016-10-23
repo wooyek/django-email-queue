@@ -5,17 +5,17 @@ Queening and storing EMAIL_BACKEND for django.
 
 https://github.com/wooyek/django-email-queue
 
-.. image:: https://img.shields.io/travis/wooyek/django-email-queue-backend.svg
-    :target: https://travis-ci.org/wooyek/django-pascal-templates
+.. image:: https://img.shields.io/travis/wooyek/django-email-queue.svg
+    :target: https://travis-ci.org/wooyek/django-email-queue
 
-.. image:: https://img.shields.io/coveralls/wooyek/django-email-queue-backend.svg
-    :target: https://coveralls.io/github/wooyek/django-pascal-templates
+.. image:: https://img.shields.io/coveralls/wooyek/django-email-queue.svg
+    :target: https://coveralls.io/github/wooyek/django-email-queue
 
-.. image:: https://img.shields.io/pypi/v/django-email-queue-backend.svg?maxAge=2592000
-    :target: https://pypi.python.org/pypi/django-pascal-templates/
+.. image:: https://img.shields.io/pypi/v/django-email-queue.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/django-email-queue/
 
-.. image:: https://img.shields.io/pypi/dm/django-email-queue-backend.svg?maxAge=2592000
-    :target: https://pypi.python.org/pypi/django-pascal-templates/
+.. image:: https://img.shields.io/pypi/dm/django-email-queue.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/django-email-queue/
 
 No change in django send_messages usage to get message storing
 --------------------------------------------------------------
