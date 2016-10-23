@@ -54,6 +54,13 @@ class BackendsTests(TestCase):
         backends.EmailBackend().send_messages(message)
         queue.assert_called_with(message)
 
+    @patch("django_email_queue.models.QueuedEmailMessage.send")
+    def test_send_messages(self, send):
+        with self.settings(EMAIL_QUEUE_EAGER=True):
+            message = EmailMultiAlternatives(to=["to@example.com"])
+            backends.EmailBackend().send_messages(message)
+            self.assertTrue(send.called)
+
 
 class QueuedEmailMessageTests(TestCase):
     @patch("django.core.mail.backends.console.EmailBackend.send_messages")
