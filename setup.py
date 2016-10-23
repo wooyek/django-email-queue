@@ -20,7 +20,7 @@ tests_require = parse_requirements(
 with io.open("README.rst", encoding="UTF-8") as readme:
     long_description = readme.read()
 
-version = "0.9.2"
+version = "0.9.3"
 
 setup_kwargs = {
     'name': "django-email-queue-backend",
