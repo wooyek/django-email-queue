@@ -20,6 +20,7 @@ class QueuedEmailMessageAdmin(admin.ModelAdmin):
     list_filter = ('status', 'from_email')
     date_hierarchy = 'created'
     actions = ['bulk_send']
+    search_fields = ('to', 'subject', 'cc', 'bcc')
 
     # noinspection PyUnusedLocal
     def bulk_send(self, request, queryset):
