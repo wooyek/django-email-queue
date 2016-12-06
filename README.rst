@@ -25,8 +25,8 @@ You don't have to change the way you send messages, this app will plugin into th
 This way all the email send though django EMAIL_BACKEND will get stored for auditing.
 
 
-No overhead overhead infrastructure
------------------------------------
+No overhead infrastructure
+--------------------------
 
 You don't have to setup overhead infrastructure (e.g. celery, redis and rabbitmq) just to send emails
 asynchronously. You can use a simple worker that will send queued emails.
