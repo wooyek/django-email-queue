@@ -25,7 +25,7 @@ version = "0.9.14"
 setup_kwargs = {
     'name': "django-email-queue",
     'version': version,
-    'packages': find_packages(),
+    'packages': find_packages(exclude=['tests', 'example']),
     'install_requires': [str(r.req) for r in install_requires],
     'tests_require': [str(r.req) for r in tests_require],
     'author': "Janusz Skonieczny",
