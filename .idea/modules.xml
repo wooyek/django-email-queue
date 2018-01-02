@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/django-email-queue.iml" filepath="$PROJECT_DIR$/.idea/django-email-queue.iml" />
-      <module fileurl="file://$PROJECT_DIR$/example_project/.idea/example_project.iml" filepath="$PROJECT_DIR$/example_project/.idea/example_project.iml" />
     </modules>
   </component>
 </project>

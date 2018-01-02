@@ -9,7 +9,6 @@
 # https://github.com/kennethreitz/pipenv/issues/540
 -e .
 
-
 # Tooling
 -r tooling.txt
 
