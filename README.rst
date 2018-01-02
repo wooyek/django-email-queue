@@ -2,6 +2,8 @@
 Django email queue
 ==================
 
+Queening and storing EMAIL_BACKEND for django.
+
 
 .. image:: https://img.shields.io/pypi/v/django-email-queue.svg
         :target: https://pypi.python.org/pypi/django-email-queue
@@ -35,55 +37,51 @@ Django email queue
 .. image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
         :target: https://saythanks.io/to/wooyek
 
-Queening and storing email backend for django
 
 * Free software: GNU Affero General Public License v3
 * Documentation: https://django-email-queue.readthedocs.io.
 
-Features
---------
+No change in django send_messages usage to get message storing
+--------------------------------------------------------------
 
-* Pending :D
+You don't have to change the way you send messages, this app will plugin into the usual django plumbing.
 
-Demo
-----
+This way all the email send though django EMAIL_BACKEND will get stored for auditing.
 
-To run an example project for this django reusable app, click the button below and start a demo serwer on Heroku
 
-.. image:: https://www.herokucdn.com/deploy/button.png
-    :target: https://heroku.com/deploy
-    :alt: Deploy Django Opt-out example project to Heroku
+No overhead infrastructure
+--------------------------
 
+You don't have to setup overhead infrastructure (e.g. celery, redis and rabbitmq) just to send emails
+asynchronously. You can use a simple worker that will send queued emails.
+
+When you get big and having a MQ and all that is a good choice, all you have to to is set
+EMAIL_QUEUE_EMAIL_BACKEND to 'djcelery_email.backends.CeleryEmailBackend'.
+This way you get message storing for auditing and will use pro setup for asynchronously ran tasks.
 
 Quickstart
 ----------
+
 
 Install Django email queue::
 
     pip install django-email-queue
 
-Add it to your `INSTALLED_APPS`:
+This is a plugin replacement for your current EMAIL_BACKEND. You'll still use it to send actual messages,
+but before them they'll get stored and queued in models visible from admin panel.
 
-.. code-block:: python
+.. code:: python
 
-    INSTALLED_APPS = (
+    EMAIL_BACKEND = 'django_email_queue.backends.EmailBackend'
+    EMAIL_QUEUE_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+    INSTALLED_APPS = [
         ...
-        'django_email_queue.apps.DjangoEmailQueueConfig',
-        ...
-    )
-
-Add Django email queue's URL patterns:
-
-.. code-block:: python
-
-    from django_email_queue import urls as django_email_queue_urls
-
-
-    urlpatterns = [
-        ...
-        url(r'^', include(django_email_queue_urls)),
-        ...
+        'django_email_queue',
     ]
+
+You'll be able to send them and clear the queue through from a management command for example using cron jobs.
+
 
 
 Running Tests

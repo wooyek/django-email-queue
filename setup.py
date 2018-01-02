@@ -83,7 +83,8 @@ setup(
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     entry_points={
         'console_scripts': [
-            'django_email_queue=django_email_queue.cli:main'
+            # 'django_email_queue=django_email_queue.cli:main'
+			'email_queue_worker = django_email_queue.worker:run',
         ]
     },
     include_package_data=True,
@@ -98,9 +99,10 @@ setup(
     zip_safe=False,
     keywords='django-email-queue',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Framework :: Django :: 1.10',
+        'Development Status :: 4 - Beta',
+		'Framework :: Django :: 1.10',
         'Intended Audience :: Developers',
+        'Environment :: Web Environment',		
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
