@@ -1,3 +1,2 @@
-Django
-django-appconf
-enum34
+# This is here until pip-compile will freeze and generate proper requirements.txt
+-r requirements.in

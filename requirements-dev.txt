@@ -1,9 +1,0 @@
-invoke
-pathlib
-bumpversion
-coverage
-coveralls
-tox
-mock
-factory-boy
-pylint

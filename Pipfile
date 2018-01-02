@@ -1,0 +1,62 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+click = "*"
+Django = ">=2.0"
+django-environ = "*"
+django-formtools = "*"
+django-import-export = "*"
+django-localflavor = "*"
+django-pascal-templates = "*"
+"enum34" = "*"
+"psycopg2" = "*"
+pycountry = "*"
+pytz = "*"
+pathlib = "*"
+requests = "*"
+factory_boy = "*"
+mock = "*"
+pytest = "*"
+pytest-xdist = "*"
+pytest-html = "*"
+pytest-django = "*"
+pytest-sugar = "*"
+"06d14aa" = {editable = true, path = "/data/work/wooyek/django-email-queue"}
+"bump2version" = "*"
+check-manifest = "*"
+codecov = "*"
+coverage = "*"
+detox = "*"
+"flake8" = "*"
+isort = "*"
+Pygments = "*"
+readme_renderer = "*"
+tox = "*"
+Sphinx = ">=1.6.5"
+sphinx_rtd_theme = "*"
+docutils = "==0.13.1"
+sphinxcontrib-spelling = "*"
+pyenchant = "*"
+
+
+[packages]
+
+click = "*"
+Django = ">=2.0"
+django-environ = "*"
+django-formtools = "*"
+django-import-export = "*"
+django-localflavor = "*"
+django-pascal-templates = "*"
+"enum34" = "*"
+"psycopg2" = "*"
+pycountry = "*"
+pytz = "*"
+pathlib = "*"
+requests = "*"
