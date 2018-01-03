@@ -118,6 +118,8 @@ upgrade: ## upgrade frozen requirements to the latest version
 	pipenv install --dev -r requirements/development.txt
 	pipenv lock --requirements > requirements.txt
 	sort requirements.txt -o requirements.txt
+	git add Pipfile*.* requirements.txt
+	git commit -m "Requirements upgrade"
 
 release: upgrade sync lint tox bump dist ## build new package version release and sync repo
 	git checkout develop

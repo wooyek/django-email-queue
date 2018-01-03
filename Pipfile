@@ -27,7 +27,7 @@ pytest-xdist = "*"
 pytest-html = "*"
 pytest-django = "*"
 pytest-sugar = "*"
-"06d14aa" = {editable = true, path = "/data/work/wooyek/django-email-queue"}
+"06d14aa" = {path = "/data/work/wooyek/django-email-queue", editable = true}
 "bump2version" = "*"
 check-manifest = "*"
 codecov = "*"
@@ -43,6 +43,7 @@ sphinx_rtd_theme = "*"
 docutils = "==0.13.1"
 sphinxcontrib-spelling = "*"
 pyenchant = "*"
+django-appconf = "*"
 
 
 [packages]
@@ -60,3 +61,4 @@ pycountry = "*"
 pytz = "*"
 pathlib = "*"
 requests = "*"
+django-appconf = "*"
