@@ -1,23 +1,5 @@
 # coding=utf-8
 # Copyright (c) 2016 Janusz Skonieczny
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
 
 from __future__ import absolute_import, unicode_literals
 
@@ -28,8 +10,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.core.management import execute_from_command_line
-from django.test import TestCase, override_settings
-from mock import patch
+from mock import patch, MagicMock
 
 from django_email_queue import backends, models
 from django_email_queue.admin import QueuedEmailMessageAdmin
@@ -147,9 +128,25 @@ class QueuedEmailMessageStatusTests(TestCase):
 
 class CommandTests(TestCase):
     @patch("django_email_queue.models.QueuedEmailMessage.send_queued")
-    def test_command(self, send_queued):
+    def test_send_command(self, send_queued):
         execute_from_command_line(argv=["", "send_queued_messages"])
         self.assertTrue(send_queued.called)
+    
+    @patch("django_email_queue.management.commands.delete_sent_queued_messages.logging")
+    def test_delete_command(self, mock_logger):
+        QueuedEmailMessageFactory.create_batch(2, status=QueuedEmailMessageStatus.posted)
+        QueuedEmailMessageFactory.create_batch(2)
+        now = timezone.now()
+        QueuedEmailMessage.objects.update(created=now)
+        self.assertEqual(2, QueuedEmailMessage.objects.filter(status=QueuedEmailMessageStatus.posted).count())
+       
+        execute_from_command_line(argv=["", "delete_sent_queued_messages"])
+        mock_logger.debug.assert_has_calls([
+            call(u"Deleting queued messages, count: %s, first: %s, last: %s", 
+                    2, now.isoformat(), now.isoformat()),
+            call(u"Queued messages deleted")
+            ])
+        self.assertEqual(0, QueuedEmailMessage.objects.filter(status=QueuedEmailMessageStatus.posted).count())
 
 
 class TestAdmin(TestCase):
@@ -169,4 +166,4 @@ class TestAdmin(TestCase):
 
 class TestWorker(TestCase):
     def test_worker(self):
-        pass
+        from django_email_queue import worker
