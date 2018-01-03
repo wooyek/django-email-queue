@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.core.management.base import BaseCommand
-from django_email_queue.models import QueuedEmailMessage, QueuedEmailMessageStatus
-
 import logging
+
+from django.core.management.base import BaseCommand
+
+from django_email_queue.models import QueuedEmailMessage, QueuedEmailMessageStatus
 
 
 class Command(BaseCommand):
@@ -15,7 +16,9 @@ class Command(BaseCommand):
             logging.debug('No messages to delete')
             return
 
-        logging.debug("Deleting queued messages, count: %s, first: %s, last: %s", sent_qs.count(),
-                     sent_qs.first().created.isoformat(), sent_qs.last().created.isoformat())
+        logging.debug(
+            "Deleting queued messages, count: %s, first: %s, last: %s", sent_qs.count(),
+            sent_qs.first().created.isoformat(), sent_qs.last().created.isoformat()
+        )
         sent_qs.delete()
         logging.debug('Queued messages deleted')

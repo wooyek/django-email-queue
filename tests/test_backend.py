@@ -10,7 +10,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.core.management import execute_from_command_line
-from mock import patch, MagicMock
+from django.test import TestCase, override_settings
+from django.utils import timezone
+from mock import call, patch
 
 from django_email_queue import backends, models
 from django_email_queue.admin import QueuedEmailMessageAdmin
@@ -131,7 +133,7 @@ class CommandTests(TestCase):
     def test_send_command(self, send_queued):
         execute_from_command_line(argv=["", "send_queued_messages"])
         self.assertTrue(send_queued.called)
-    
+
     @patch("django_email_queue.management.commands.delete_sent_queued_messages.logging")
     def test_delete_command(self, mock_logger):
         QueuedEmailMessageFactory.create_batch(2, status=QueuedEmailMessageStatus.posted)
@@ -139,13 +141,13 @@ class CommandTests(TestCase):
         now = timezone.now()
         QueuedEmailMessage.objects.update(created=now)
         self.assertEqual(2, QueuedEmailMessage.objects.filter(status=QueuedEmailMessageStatus.posted).count())
-       
+
         execute_from_command_line(argv=["", "delete_sent_queued_messages"])
         mock_logger.debug.assert_has_calls([
-            call(u"Deleting queued messages, count: %s, first: %s, last: %s", 
-                    2, now.isoformat(), now.isoformat()),
+            call(u"Deleting queued messages, count: %s, first: %s, last: %s",
+                 2, now.isoformat(), now.isoformat()),
             call(u"Queued messages deleted")
-            ])
+        ])
         self.assertEqual(0, QueuedEmailMessage.objects.filter(status=QueuedEmailMessageStatus.posted).count())
 
 
@@ -166,4 +168,4 @@ class TestAdmin(TestCase):
 
 class TestWorker(TestCase):
     def test_worker(self):
-        from django_email_queue import worker
+        pass
