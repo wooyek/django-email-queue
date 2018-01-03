@@ -27,7 +27,7 @@ pytest-xdist = "*"
 pytest-html = "*"
 pytest-django = "*"
 pytest-sugar = "*"
-"06d14aa" = {path = "/data/work/wooyek/django-email-queue", editable = true}
+"06d14aa" = {editable = true, path = "/data/work/wooyek/django-email-queue"}
 "bump2version" = "*"
 check-manifest = "*"
 codecov = "*"
