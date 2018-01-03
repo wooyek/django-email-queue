@@ -62,7 +62,7 @@ test: ## run tests quickly with the default Python
 
 tox: ## run tests on every Python version with tox
 	tox --skip-missing-interpreters --recreate
-	
+
 detox: ## run tests on every Python version with tox
 	detox --skip-missing-interpreters --recreate
 
@@ -77,7 +77,7 @@ coverage-report: coverage ## check code coverage and view report in the browser
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/django_email_queue*.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ -H "Api docs" src
+	sphinx-apidoc -o docs/ -H "Api docs" src */migrations/*
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 

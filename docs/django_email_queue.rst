@@ -1,6 +1,13 @@
 django\_email\_queue package
 ============================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    django_email_queue.migrations
+
 Submodules
 ----------
 
@@ -28,26 +35,10 @@ django\_email\_queue\.apps module
     :undoc-members:
     :show-inheritance:
 
-django\_email\_queue\.cli module
---------------------------------
+django\_email\_queue\.backends module
+-------------------------------------
 
-.. automodule:: django_email_queue.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-django\_email\_queue\.factories module
---------------------------------------
-
-.. automodule:: django_email_queue.factories
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-django\_email\_queue\.forms module
-----------------------------------
-
-.. automodule:: django_email_queue.forms
+.. automodule:: django_email_queue.backends
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,26 +51,10 @@ django\_email\_queue\.models module
     :undoc-members:
     :show-inheritance:
 
-django\_email\_queue\.resources module
---------------------------------------
+django\_email\_queue\.worker module
+-----------------------------------
 
-.. automodule:: django_email_queue.resources
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-django\_email\_queue\.urls module
----------------------------------
-
-.. automodule:: django_email_queue.urls
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-django\_email\_queue\.views module
-----------------------------------
-
-.. automodule:: django_email_queue.views
+.. automodule:: django_email_queue.worker
     :members:
     :undoc-members:
     :show-inheritance:

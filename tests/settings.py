@@ -9,7 +9,7 @@ TEST_RUNNER = 'tests.ForceEmailBackendRunner'
 
 SECRET_KEY = 'fake-key'
 INSTALLED_APPS = [
-    "django_email_queue",
+    "django_email_queue.apps.DjangoEmailQueueConfig",
 ]
 
 DATABASES = {
