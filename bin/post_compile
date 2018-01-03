@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# File path should be ./bin/post_compile
+# https://gist.github.com/kylefox/7044491259b6b2586ca1
+
+echo "UPGRADE_REQUIREMENTS: $UPGRADE_REQUIREMENTS"
+
+if [[ "$UPGRADE_REQUIREMENTS" == "True" ]]; then
+    echo "====> Installing python-enchant with apt"
+    apt-get install -y python-enchant
+
+    echo "====> Upgrading requirements"
+    pwd
+    ls -la
+    pip install -r requirements.txt -U
+
+    # Heroku will ignore example project requirements
+    # thinking that requirements in root folder are the web-app requirements
+    # but they are only django-email-queue requirements and not full example project requirements
+    echo "====> Installing example project requirements"
+    cd example_project && pip install -r requirements.txt -U
+    pwd
+
+fi
+echo "====> Installed versions"
+pip freeze
+

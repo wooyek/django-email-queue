@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+echo "AUTO_MIGRATE: $AUTO_MIGRATE"
+
+if [[ "$AUTO_MIGRATE" == "True" ]]; then
+    echo "=> Performing database migrations"
+    cd /app/example_project/src
+    python /app/example_project/manage.py migrate --noinput
+    python /app/example_project/manage.py opt_out_feedback_defaults --on-empty
+fi
+
+if [[ -n "$CREATE_SUPER_USER" ]]; then
+    echo "==> Creating super user"
+    cd /app/example_project/src
+    printf "from django.contrib.auth.models import User\nif not User.objects.exists(): User.objects.create_superuser(*'$CREATE_SUPER_USER'.split(':'))" | python /app/example_project/manage.py shell
+fi
+
+if [[ -n "$APP_COLLECTSTATIC" ]]; then
+    echo "==> Collecting static"
+    cd /app/example_project/src
+    python /app/example_project/manage.py collectstatic
+fi
+

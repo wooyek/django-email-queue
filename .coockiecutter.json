@@ -1,0 +1,28 @@
+{
+  "cookiecutter": {
+    "include_sphinx_doc": "y",
+    "project_slug": "django-email-queue",
+    "project_url": "https://github.com/wooyek/django-email-queue",
+    "app_config_name": "DjangoEmailQueueConfig",
+    "pypi_username": "wooyek",
+    "open_source_license": "GNU Affero General Public License v3",
+    "run_tests_on_init": "y",
+    "use_travis_ci": "y",
+    "project_name": "Django email queue",
+    "package_name": "django_email_queue",
+    "copyright": "Janusz Skonieczny",
+    "sphinx_theme": "sphinx-rtd-theme",
+    "full_name": "Janusz Skonieczny",
+    "use_read_the_docs": "y",
+    "repo_domain": "github.com",
+    "create_example_project": "Y",
+    "repo_username": "wooyek",
+    "project_short_description": "Queening and storing email backend for django",
+    "email": "js+pypi@bravelabs.pl",
+    "create_virtual_environment": "y",
+    "version": "0.9.17",
+    "create_author_file": "y",
+    "git_init": "y",
+    "repo_url": "git@github.com:wooyek/django-email-queue.git"
+  }
+}
