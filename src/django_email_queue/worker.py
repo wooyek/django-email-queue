@@ -16,34 +16,34 @@ logging.disable(logging.NOTSET)
 
 # logging.info("Current user: %s" % getpass.getuser())
 
-assert 'DJANGO_SETTINGS_MODULE' in os.environ, "DJANGO_SETTINGS_MODULE is missing from environment, you must set if before running this worker"
-logging.info("os.environ['DJANGO_SETTINGS_MODULE']: %s" % os.environ['DJANGO_SETTINGS_MODULE'])
-
-cwd = os.getcwd()
-
-if cwd not in sys.path:  # pragma: no cover
-    sys.path.append(cwd)
-
-# Show a debugging info on console
-logging.debug("__file__ = %s", __file__)
-logging.debug("sys.version = %s", sys.version)
-logging.debug("os.getpid() = %s", os.getpid())
-logging.debug("os.getcwd() = %s", cwd)
-logging.debug("os.curdir = %s", os.curdir)
-logging.debug("sys.path:\n\t%s", "\n\t".join(sys.path))
-logging.debug("PYTHONPATH:\n\t%s", "\n\t".join(os.environ.get('PYTHONPATH', "").split(';')))
-logging.debug("sys.modules.keys() = %s", repr(sys.modules.keys()))
-logging.debug("sys.modules.has_key('website') = %s", 'website' in sys.modules)
-
-from django.conf import settings
-import django
-
-django.setup()
-logging.debug("settings.__dir__: %s", settings.__dir__())
-logging.debug("settings.DEBUG: %s", settings.DEBUG)
-
 
 def run():  # pragma: no cover
+    assert 'DJANGO_SETTINGS_MODULE' in os.environ, "DJANGO_SETTINGS_MODULE is missing from environment, you must set if before running this worker"
+    logging.info("os.environ['DJANGO_SETTINGS_MODULE']: %s" % os.environ['DJANGO_SETTINGS_MODULE'])
+
+    cwd = os.getcwd()
+
+    if cwd not in sys.path:  # pragma: no cover
+        sys.path.append(cwd)
+
+    # Show a debugging info on console
+    logging.debug("__file__ = %s", __file__)
+    logging.debug("sys.version = %s", sys.version)
+    logging.debug("os.getpid() = %s", os.getpid())
+    logging.debug("os.getcwd() = %s", cwd)
+    logging.debug("os.curdir = %s", os.curdir)
+    logging.debug("sys.path:\n\t%s", "\n\t".join(sys.path))
+    logging.debug("PYTHONPATH:\n\t%s", "\n\t".join(os.environ.get('PYTHONPATH', "").split(';')))
+    logging.debug("sys.modules.keys() = %s", repr(sys.modules.keys()))
+    logging.debug("sys.modules.has_key('website') = %s", 'website' in sys.modules)
+
+    from django.conf import settings
+    import django
+
+    django.setup()
+    logging.debug("settings.__dir__: %s", settings.__dir__())
+    logging.debug("settings.DEBUG: %s", settings.DEBUG)
+
     from django_email_queue.models import QueuedEmailMessage
 
     while True:
