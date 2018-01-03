@@ -16,6 +16,7 @@ include tox.ini
 include *.json
 include Procfile
 include .env Pipfile Pipfile.lock
+include .tmp/.gitignore
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

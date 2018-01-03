@@ -47,10 +47,10 @@ def get_version(*file_paths):
 
 version = get_version("src", "django_email_queue", "__init__.py")
 
-
 if sys.argv[-1] == 'publish':
     try:
         import wheel
+
         print("Wheel version: ", wheel.__version__)
     except ImportError:
         print('Wheel library missing. Please run "pip install wheel"')
@@ -84,7 +84,7 @@ setup(
     entry_points={
         'console_scripts': [
             # 'django_email_queue=django_email_queue.cli:main'
-			'email_queue_worker = django_email_queue.worker:run',
+            'email_queue_worker = django_email_queue.worker:run',
         ]
     },
     include_package_data=True,
@@ -100,9 +100,9 @@ setup(
     keywords='django-email-queue',
     classifiers=[
         'Development Status :: 4 - Beta',
-		'Framework :: Django :: 1.10',
+        'Framework :: Django :: 1.10',
         'Intended Audience :: Developers',
-        'Environment :: Web Environment',		
+        'Environment :: Web Environment',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',

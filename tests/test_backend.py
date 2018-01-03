@@ -19,24 +19,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-import logging
 import os
-from datetime import date, datetime, timedelta
 
 import six
 from django.conf import settings
 from django.contrib import admin
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import send_mail
-from django.core.management import call_command, execute_from_command_line
-from mock import patch, MagicMock
-
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.management import execute_from_command_line
 from django.test import TestCase, override_settings
+from mock import patch
 
-from django_email_queue import models, backends
+from django_email_queue import backends, models
 from django_email_queue.admin import QueuedEmailMessageAdmin
 from django_email_queue.models import QueuedEmailMessage, QueuedEmailMessageStatus
 from tests.factories import QueuedEmailMessageFactory
@@ -76,6 +71,7 @@ class BackendsTests(TestCase):
         with self.settings(EMAIL_QUEUE_EAGER=True):
             send_mail("foo", "bar", "me@examle.com", ["to@example.com"])
             self.assertTrue(send_messages.called)
+
 
 class QueuedEmailMessageTests(TestCase):
     @patch("django.core.mail.backends.console.EmailBackend.send_messages")
@@ -170,6 +166,7 @@ class TestAdmin(TestCase):
         from django.core.management import BaseCommand
         BaseCommand().check(display_num_errors=True)
 
+
 class TestWorker(TestCase):
     def test_worker(self):
-        from django_email_queue import worker
+        pass
