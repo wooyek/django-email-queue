@@ -81,7 +81,8 @@ detox: ## run tests on every Python version with tox
 	tox -l | $(DETOXME) | sh
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source src --parallel-mode setup.py test
+	# coverage run --source src --parallel-mode setup.py test
+	pytest --cov=src --cov=tests
 
 coverage-report: coverage ## check code coverage and view report in the browser
 	coverage combine --append
@@ -129,6 +130,12 @@ bump: ## increment version number
 	bumpversion patch
 
 upgrade: ## upgrade frozen requirements to the latest version
+	pip-compile requirements.in -o requirements.txt
+	sort requirements.txt -o requirements.txt
+	git add requirements.txt
+	git commit -m "Requirements upgrade"
+
+upgrade2: ## upgrade frozen requirements to the latest version
 	pipenv install -r requirements/production.txt
 	pipenv install --dev -r requirements/development.txt
 	pipenv lock --requirements > requirements/lock/production.txt
