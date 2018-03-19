@@ -23,6 +23,18 @@ endef
 export PRINT_HELP_PYSCRIPT
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
+define DETOXME_PYSCRIPT
+import sys
+if __name__ == "__main__":
+    envs = [env.strip() for env in sys.stdin.readlines()]
+    print(
+        "detox -e " + ",".join(env for env in envs[:-1]) + "; "
+        "tox -e " + envs[-1]
+    )
+endef
+export DETOXME_PYSCRIPT
+DETOXME := python -c "$$DETOXME_PYSCRIPT"
+
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
@@ -36,6 +48,7 @@ clean-build: ## remove build artifacts
 	rm -fr example_project/.eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
+	find .tmp ! -name '.gitignore' ! -name '.tmp' -exec rm -fr {} +
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -62,14 +75,16 @@ test: ## run tests quickly with the default Python
 
 tox: ## run tests on every Python version with tox
 	tox --skip-missing-interpreters --recreate
-
+	
 detox: ## run tests on every Python version with tox
-	detox --skip-missing-interpreters --recreate
+	#detox --skip-missing-interpreters --recreate
+	tox -l | $(DETOXME) | sh
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source src --parallel-mode setup.py test
 
 coverage-report: coverage ## check code coverage and view report in the browser
+	coverage combine --append
 	coverage report -m
 	coverage html
 	$(BROWSER) tmp/coverage/index.html
@@ -116,12 +131,14 @@ bump: ## increment version number
 upgrade: ## upgrade frozen requirements to the latest version
 	pipenv install -r requirements/production.txt
 	pipenv install --dev -r requirements/development.txt
-	pipenv lock --requirements > requirements.txt
-	sort requirements.txt -o requirements.txt
-	git add Pipfile Pipfile.lock requirements.txt
+	pipenv lock --requirements > requirements/lock/production.txt
+	pipenv lock --requirements --dev | grep -v '/fakturownia-python' -- > requirements/lock/development.txt
+	sort requirements/lock/production.txt -o requirements/lock/production.txt
+	sort requirements/lock/development.txt -o requirements/lock/development.txt
+	git add Pipfile Pipfile.lock requirements/lock/*.txt
 	git commit -m "Requirements upgrade"
 
-release: upgrade sync lint tox bump dist ## build new package version release and sync repo
+release: lint upgrade detox sync bump dist ## build new package version release and sync repo
 	git checkout develop
 	git merge master --verbose
 	git push origin develop --verbose

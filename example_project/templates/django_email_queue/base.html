@@ -1,0 +1,74 @@
+{% load staticfiles i18n %}<!DOCTYPE html>
+<html lang="en" >
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}Django email queue{% endblock title %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+</head>
+<body>
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <div class="container">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">django-email-queue </a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://django-email-queue.readthedocs.io">Docs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/wooyek/django-email-queue">Repo</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </nav>
+{% if messages %}
+<div class="container">
+  {% for message in messages %}
+  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% block content %}
+<div class="container">
+  <div class="row">
+      <div class="col">
+        <div class="jumbotron my-4">
+          <h1 class="display-3">Hello, world!</h1>
+          <p class="lead">Use this document as a way to quick start any new project.</p>
+          <hr class="my-4">
+          <p>The current template is loaded from
+            <code>django-email-queue/project_example/templates/django_email_queue/base.html</code>. </p>
+          <p>Whenever you overwrite the contents of <code>django-email-queue/example_project/src/website/urls.py</code> with your
+            own content, you should see it here.</p>
+          <p class="lead">
+            <a class="btn btn-primary btn-lg" href="https://django-email-queue.readthedocs.io" role="button">Learn more</a>
+          </p>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+

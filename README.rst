@@ -107,4 +107,4 @@ This package was created with Cookiecutter_ and the `wooyek/cookiecutter-django-
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`wooyek/cookiecutter-django-app`: https://github.com/wooyek/cookiecutter-django-app
-.. _`pipenv`: https://docs.pipenv.org/install#fancy-installation-of-pipenv
+.. _`pipenv`: https://docs.pipenv.org/install

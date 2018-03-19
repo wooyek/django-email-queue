@@ -6,9 +6,10 @@ pytest-xdist
 pytest-html
 pytest-django
 pytest-sugar
+pytest-cov
+python-coveralls
 factory-boy
 psycopg2
 django-environ
 pathlib ; python_version < '3.3'
 enum34 ; python_version < '3.4'
-

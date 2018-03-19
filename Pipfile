@@ -1,25 +1,12 @@
 [[source]]
 
 url = "https://pypi.python.org/simple"
-verify_ssl = true
 name = "pypi"
+verify_ssl = true
 
 
 [dev-packages]
 
-click = "*"
-Django = ">=2.0"
-django-environ = "*"
-django-formtools = "*"
-django-import-export = "*"
-django-localflavor = "*"
-django-pascal-templates = "*"
-"enum34" = "*"
-"psycopg2" = "*"
-pycountry = "*"
-pytz = "*"
-pathlib = "*"
-requests = "*"
 factory_boy = "*"
 mock = "*"
 pytest = "*"
@@ -27,7 +14,14 @@ pytest-xdist = "*"
 pytest-html = "*"
 pytest-django = "*"
 pytest-sugar = "*"
-"06d14aa" = {editable = true, path = "/data/work/wooyek/django-email-queue"}
+pytest-cov = "*"
+python-coveralls = "*"
+"psycopg2" = "*"
+django-environ = "*"
+pathlib = "*"
+"enum34" = "*"
+"06d14aa" = {path = "/data/work/wooyek/django-email-queue", editable = true}
+"02bb47c" = {path = "/data/work/wooyek/django-email-queue/example_project", editable = true}
 "bump2version" = "*"
 check-manifest = "*"
 codecov = "*"
@@ -36,20 +30,19 @@ detox = "*"
 "flake8" = "*"
 isort = "*"
 Pygments = "*"
-readme_renderer = "*"
+readme-renderer = "*"
 tox = "*"
 Sphinx = ">=1.6.5"
-sphinx_rtd_theme = "*"
+sphinx-rtd-theme = "*"
 docutils = "==0.13.1"
 sphinxcontrib-spelling = "*"
 pyenchant = "*"
-django-appconf = "*"
 
 
 [packages]
 
 click = "*"
-Django = ">=2.0"
+django = ">=2.0"
 django-environ = "*"
 django-formtools = "*"
 django-import-export = "*"
@@ -61,4 +54,3 @@ pycountry = "*"
 pytz = "*"
 pathlib = "*"
 requests = "*"
-django-appconf = "*"

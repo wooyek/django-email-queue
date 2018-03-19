@@ -1,5 +1,5 @@
 
-    Queening and storing email backend for django
+    Queening and storing EMAIL_BACKEND for django.
     Copyright (C) 2018  Janusz Skonieczny
 
     This program is free software: you can redistribute it and/or modify

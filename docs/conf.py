@@ -43,6 +43,7 @@ def setup_django():
 setup_django()
 import django_email_queue
 
+
 autodoc_default_flags = ['members', 'annotation']
 autosummary_generate = True
 modindex_common_prefix = ['django_email_queue.']

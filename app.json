@@ -1,6 +1,6 @@
 {
   "name": "Django email queue demo",
-  "description": "Queening and storing email backend for django",
+  "description": "Queening and storing EMAIL_BACKEND for django.",
   "keywords": [
     "Python",
     "Django"
