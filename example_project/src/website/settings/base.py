@@ -181,7 +181,7 @@ import django_email_queue  # noqa F402 isort:skip
 LOCALE_PATHS = [
     str(Path(django_email_queue.__file__).parent / 'locales'),
     str(BASE_DIR / 'locales'),
-#    str(Path(django_powerbank.__file__).parent / 'locales'),
+    # str(Path(django_powerbank.__file__).parent / 'locales'),
 ]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
