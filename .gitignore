@@ -92,3 +92,4 @@ fabric.properties
 # Custom project ignores
 .pyvenv
 .cache
+.pytest_cache

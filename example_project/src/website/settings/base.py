@@ -118,7 +118,7 @@ INSTALLED_APPS = [
     'django_email_queue.apps.DjangoEmailQueueConfig',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -129,6 +129,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Partial backward compatibility
+MIDDLEWARE_CLASSES = MIDDLEWARE
 
 ROOT_URLCONF = 'website.urls'
 

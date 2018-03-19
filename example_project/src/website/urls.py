@@ -21,5 +21,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^i18n/language', TemplateView.as_view(template_name='set_language.html'), name='language_form'),
-    url(r'', include('django_email_queue.urls', namespace='django_email_queue')),
 ]
