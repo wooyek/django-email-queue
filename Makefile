@@ -66,7 +66,7 @@ isort:
 
 lint: ## check style with flake8
 	flake8 src tests setup.py manage.py
-	isort --verbose --check-only --diff --recursive src tests example_project setup.py
+	isort --check-only --diff --recursive src tests example_project setup.py
 	python setup.py check --strict --metadata --restructuredtext
 	check-manifest  --ignore .idea,.idea/* .
 
@@ -135,7 +135,7 @@ upgrade: ## upgrade frozen requirements to the latest version
 	git add requirements.txt
 	git commit -m "Requirements upgrade"
 
-upgrade2: ## upgrade frozen requirements to the latest version
+upgrade_pipenv: ## upgrade frozen requirements to the latest version
 	pipenv install -r requirements/production.txt
 	pipenv install --dev -r requirements/development.txt
 	pipenv lock --requirements > requirements/lock/production.txt
