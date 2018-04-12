@@ -29,6 +29,7 @@ class ChoicesIntEnum(IntEnum):
 class QueuedEmailMessageStatus(ChoicesIntEnum):
     created = 0
     posted = 1
+    sending = 2
 
 
 HTML_MIME_TYPE = 'text/html'
@@ -113,6 +114,8 @@ class QueuedEmailMessage(models.Model):
         if self.body_html:
             mail.attach_alternative(self.body_html, HTML_MIME_TYPE)
 
+        self.status = QueuedEmailMessageStatus.sending
+        self.save()
         mail.send(fail_silently=fail_silently)
         self.posted = timezone.now()
         self.status = QueuedEmailMessageStatus.posted
