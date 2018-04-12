@@ -90,13 +90,13 @@ Now you have a few options to setup queue processing
 
 Set EMAIL_QUEUE_SLEEP_TIME to number of settings to sleep between runs.
 
-2. Run django command to process queue and exit::
+2. Run django command to process queue and exit:
 
 .. code:: bash
 
     python manage.py send_queued_messages
 
-3. Manually from django admin for ::
+3. Manually from django admin for :
 
 .. image:: https://django-email-queue.readthedocs.io/en/latest/_static/Admin-bulk-send.png
     :alt: Deploy Django Opt-out example project to Heroku
