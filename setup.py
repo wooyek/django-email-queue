@@ -96,7 +96,7 @@ setup(
         '': ['test*.py', 'tests/*.env', '**/tests.py'],
     },
     python_requires='>=2.7',
-    install_requires=install_requires,
+    install_requires=['django>=1.8'],
     extras_require={
         'factories': ['factory-boy'],
     },

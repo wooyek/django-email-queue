@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
+import pytest
 import six
 from django.conf import settings
 from django.contrib import admin
@@ -169,3 +170,10 @@ class TestAdmin(TestCase):
 class TestWorker(TestCase):
     def test_worker(self):
         pass
+
+
+@pytest.mark.skipif('DJANGO' not in os.environ, reason="DJANGO env not defined")
+def test_django_version():
+    # This test testing matrix if django version installed is indeed that requested
+    from django import VERSION
+    assert "{}.{}".format(VERSION[0], VERSION[1]) == os.environ['DJANGO']

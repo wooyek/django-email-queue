@@ -1,7 +1,6 @@
-# Django email queue dependencies 
+# Django email queue dependencies
 # Django maybe missing here if multiple verssions are to be tested and installed by tox
 # For development we keep them unfreezed to work and test on newest versions as soon as they are released
 # Freezing can be perforemd by pip-compile or pipenv
 
-django<2.0 ; python_version < '3.5'
-django>=2.0 ; python_version >= '3.5'
+django>=1.8
