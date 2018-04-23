@@ -125,7 +125,7 @@ class QueuedEmailMessageTests(TestCase):
 
 class QueuedEmailMessageStatusTests(TestCase):
     def test_values(self):
-        self.assertEqual([0, 1], QueuedEmailMessageStatus.values())
+        self.assertEqual([0, 1, 2], QueuedEmailMessageStatus.values())
 
 
 class CommandTests(TestCase):
