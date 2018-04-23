@@ -11,5 +11,5 @@ isort
 pygments
 readme-renderer
 setuptools
-tox
+tox<3.0.0,>=2.0.0
 wheel
