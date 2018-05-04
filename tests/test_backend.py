@@ -4,6 +4,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import os
+from datetime import timedelta
 
 import pytest
 import six
@@ -18,6 +19,7 @@ from mock import call, patch
 from django_email_queue import backends, models
 from django_email_queue.admin import QueuedEmailMessageAdmin
 from django_email_queue.models import QueuedEmailMessage, QueuedEmailMessageStatus
+from tests import factories
 from tests.factories import QueuedEmailMessageFactory
 
 
@@ -123,10 +125,72 @@ class QueuedEmailMessageTests(TestCase):
         o = QueuedEmailMessage(subject="ążśźćńółĄŻŚŹĘĆŃÓŁ", to="b")
         self.assertEqual(u"QueuedEmailMessage:ążśźćńółĄŻŚŹĘĆŃÓŁ:b", six.text_type(o))
 
+    @override_settings(EMAIL_QUEUE_DISCARD_HOURS=2)
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_discard_message(self, send):
+        send.side_effect = Exception("Foo")
+        item = models.QueuedEmailMessage(created=timezone.now() - timedelta(hours=2, seconds=1))
+        item.send()
+        self.assertEqual(item.status, models.QueuedEmailMessageStatus.discarded)
+
+    @override_settings(EMAIL_QUEUE_DISCARD_HOURS=1)
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_dont_discard_message(self, send):
+        send.side_effect = Exception("Foo")
+        item = models.QueuedEmailMessage(created=timezone.now() - timedelta(seconds=3599))
+        item.send()
+        self.assertEqual(models.QueuedEmailMessageStatus.created, item.status)
+
+    @override_settings(EMAIL_QUEUE_DISCARD_HOURS=None)
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_dont_discard_message2(self, send):
+        send.side_effect = Exception("Foo")
+        item = models.QueuedEmailMessage(created=timezone.now() - timedelta(seconds=3599))
+        item.send()
+        self.assertEqual(models.QueuedEmailMessageStatus.created, item.status)
+
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_fail_silently(self, send):
+        send.side_effect = Exception("Foo")
+        item = models.QueuedEmailMessage(created=timezone.now())
+        item.send()
+
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_dont_fail_silently(self, send):
+        send.side_effect = Exception("Foo")
+        item = models.QueuedEmailMessage()
+        self.assertRaises(Exception, item.send, fail_silently=False)
+
+    @override_settings(EMAIL_QUEUE_RETRY_SECONDS=600)
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_retry_busy(self, send):
+        seconds = settings.EMAIL_QUEUE_RETRY_SECONDS + 2
+        retry = timezone.now() - timedelta(seconds=seconds)
+        message = factories.QueuedEmailMessageFactory(
+            ts=retry,
+            status=models.QueuedEmailMessageStatus.sending,
+        )
+        models.QueuedEmailMessage.objects.all().update(ts=retry)
+        message.send_queued()
+        self.assertTrue(send.called)
+
+    @override_settings(EMAIL_QUEUE_RETRY_SECONDS=600)
+    @patch('django_email_queue.models.QueuedEmailMessage._send')
+    def test_retry_wait(self, send):
+        seconds = settings.EMAIL_QUEUE_RETRY_SECONDS - 2
+        retry = timezone.now() - timedelta(seconds=seconds)
+        message = factories.QueuedEmailMessageFactory(
+            ts=retry,
+            status=models.QueuedEmailMessageStatus.sending,
+        )
+        models.QueuedEmailMessage.objects.all().update(ts=retry)
+        message.send_queued()
+        self.assertFalse(send.called)
+
 
 class QueuedEmailMessageStatusTests(TestCase):
     def test_values(self):
-        self.assertEqual([0, 1, 2], QueuedEmailMessageStatus.values())
+        self.assertEqual([0, 1, 2, 3], QueuedEmailMessageStatus.values())
 
 
 class CommandTests(TestCase):

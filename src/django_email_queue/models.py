@@ -4,12 +4,14 @@
 from __future__ import absolute_import, unicode_literals
 
 import logging
+from datetime import timedelta
 from enum import IntEnum
 
 import six
 from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -30,6 +32,7 @@ class QueuedEmailMessageStatus(ChoicesIntEnum):
     created = 0
     posted = 1
     sending = 2
+    discarded = 3
 
 
 HTML_MIME_TYPE = 'text/html'
@@ -41,6 +44,7 @@ class QueuedEmailMessage(models.Model):
     status = models.PositiveSmallIntegerField(choices=QueuedEmailMessageStatus.choices(), default=QueuedEmailMessageStatus.created)
     created = models.DateTimeField(auto_now_add=True)
     posted = models.DateTimeField(blank=True, null=True)
+    ts = models.DateTimeField(blank=True, null=True, auto_now=True)
     encoding = models.CharField(max_length=15, blank=True, null=True)
     from_email = models.CharField(max_length=300)
     to = models.TextField(blank=True, null=True)
@@ -90,7 +94,20 @@ class QueuedEmailMessage(models.Model):
             logging.debug("Queue message: %s", instance)
             yield instance
 
-    def send(self, connection=None, fail_silently=False):
+    def send(self, connection=None, fail_silently=True):
+        try:
+            return self._send(connection=connection, fail_silently=False)
+        except Exception as ex:
+            if fail_silently is False:
+                raise ex
+            # Log error but do not block other messages
+            logging.error("Email send failed", exc_info=ex)
+            age_hours = (timezone.now() - self.created).seconds / 3600
+            if settings.EMAIL_QUEUE_DISCARD_HOURS and age_hours > settings.EMAIL_QUEUE_DISCARD_HOURS:
+                self.status = QueuedEmailMessageStatus.discarded
+                self.save()
+
+    def _send(self, connection=None, fail_silently=False):
         if connection is None:
             from django.core.mail import get_connection
             connection = get_connection(
@@ -125,7 +142,12 @@ class QueuedEmailMessage(models.Model):
 
     @classmethod
     def send_queued(cls, limit=None):
-        qry = cls.objects.filter(status=QueuedEmailMessageStatus.created).order_by("created")
+        seconds = settings.EMAIL_QUEUE_RETRY_SECONDS
+        retry = timezone.now() - timedelta(seconds=seconds)
+        qry = cls.objects.filter(
+            Q(status=QueuedEmailMessageStatus.created) |
+            Q(status=QueuedEmailMessageStatus.sending, ts__lte=retry)
+        ).order_by("created")
         if limit:
             qry = qry[:limit]
         cls.bulk_send(qry)

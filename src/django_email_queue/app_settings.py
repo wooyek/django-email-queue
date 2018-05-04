@@ -16,3 +16,9 @@ EMAIL_QUEUE_EAGER = False
 
 #: Sleep time between queue checkup
 EMAIL_QUEUE_SLEEP_TIME = 15
+
+#: Discard messages after failing delivery for X hours
+EMAIL_QUEUE_DISCARD_HOURS = None
+
+#: Retry stalled messages (status==sending) after X seconds
+EMAIL_QUEUE_RETRY_SECONDS = 300
