@@ -95,17 +95,18 @@ class QueuedEmailMessage(models.Model):
             yield instance
 
     def send(self, connection=None, fail_silently=True):
+        if self.created:
+            age_hours = (timezone.now() - self.created).seconds / 3600
+            if settings.EMAIL_QUEUE_DISCARD_HOURS and age_hours > settings.EMAIL_QUEUE_DISCARD_HOURS:
+                self.status = QueuedEmailMessageStatus.discarded
+                self.save()
         try:
             return self._send(connection=connection, fail_silently=False)
         except Exception as ex:
             if fail_silently is False:
                 raise ex
             # Log error but do not block other messages
-            logging.error("Email send failed", exc_info=ex)
-            age_hours = (timezone.now() - self.created).seconds / 3600
-            if settings.EMAIL_QUEUE_DISCARD_HOURS and age_hours > settings.EMAIL_QUEUE_DISCARD_HOURS:
-                self.status = QueuedEmailMessageStatus.discarded
-                self.save()
+            logging.error("Email send failed: {}".format(self), exc_info=ex)
 
     def _send(self, connection=None, fail_silently=False):
         if connection is None:
