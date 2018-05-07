@@ -58,7 +58,7 @@ class QueuedEmailMessage(models.Model):
     # TODO: attachments, headers, alternatives
 
     def __str__(self):
-        return u"{}:{}:{}".format(self.__class__.__name__, self.subject, self.to)
+        return u"{}:{}:{}:{}".format(self.__class__.__name__, self.pk, self.subject, self.to)
 
     @classmethod
     def _create(cls, email_message, commit=True):

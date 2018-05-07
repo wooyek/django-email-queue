@@ -123,7 +123,11 @@ class QueuedEmailMessageTests(TestCase):
 
     def test_str(self):
         o = QueuedEmailMessage(subject="ążśźćńółĄŻŚŹĘĆŃÓŁ", to="b")
-        self.assertEqual(u"QueuedEmailMessage:ążśźćńółĄŻŚŹĘĆŃÓŁ:b", six.text_type(o))
+        self.assertEqual(u"QueuedEmailMessage:None:ążśźćńółĄŻŚŹĘĆŃÓŁ:b", six.text_type(o))
+
+    def test_str2(self):
+        o = QueuedEmailMessage(subject="ążśźćńółĄŻŚŹĘĆŃÓŁ", to="b", pk=123)
+        self.assertEqual(u"QueuedEmailMessage:123:ążśźćńółĄŻŚŹĘĆŃÓŁ:b", six.text_type(o))
 
     @override_settings(EMAIL_QUEUE_DISCARD_HOURS=2)
     @patch('django_email_queue.models.QueuedEmailMessage._send')
