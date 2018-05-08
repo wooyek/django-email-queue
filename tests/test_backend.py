@@ -136,6 +136,7 @@ class QueuedEmailMessageTests(TestCase):
         item = models.QueuedEmailMessage(created=timezone.now() - timedelta(hours=2, seconds=1))
         item.send()
         self.assertEqual(item.status, models.QueuedEmailMessageStatus.discarded)
+        self.assertFalse(send.called)
 
     @override_settings(EMAIL_QUEUE_DISCARD_HOURS=1)
     @patch('django_email_queue.models.QueuedEmailMessage._send')

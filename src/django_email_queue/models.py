@@ -100,6 +100,7 @@ class QueuedEmailMessage(models.Model):
             if settings.EMAIL_QUEUE_DISCARD_HOURS and age_hours > settings.EMAIL_QUEUE_DISCARD_HOURS:
                 self.status = QueuedEmailMessageStatus.discarded
                 self.save()
+                return
         try:
             return self._send(connection=connection, fail_silently=False)
         except Exception as ex:
