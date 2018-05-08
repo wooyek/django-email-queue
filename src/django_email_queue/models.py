@@ -96,7 +96,7 @@ class QueuedEmailMessage(models.Model):
 
     def send(self, connection=None, fail_silently=True):
         if self.created:
-            age_hours = (timezone.now() - self.created).seconds / 3600
+            age_hours = (timezone.now() - self.created).total_seconds() / 3600
             if settings.EMAIL_QUEUE_DISCARD_HOURS and age_hours > settings.EMAIL_QUEUE_DISCARD_HOURS:
                 self.status = QueuedEmailMessageStatus.discarded
                 self.save()
